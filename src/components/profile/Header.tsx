@@ -1,5 +1,5 @@
 import { Settings } from 'lucide-react';
-
+import { Link } from 'react-router-dom';
 import { mockSpecialist } from '../../data/mockData';
 
 interface HeaderProps {
@@ -43,9 +43,12 @@ export default function Header({ onBookClick }: HeaderProps) {
         >
           Book a session
         </button> */}
-        <button className="w-full mt-6 h-12 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors">
+                <a
+            href="https://t.me/maksat_kanybekov"
+            target="_blank"
+            rel="noopener noreferrer" className="flex justify-center items-center w-full mt-6 h-12 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors">
          Связаться
-        </button>
+        </a>
       </div>
     </header>
   );
