@@ -13,7 +13,7 @@ export default function About() {
           className="w-full flex items-center justify-between text-left"
         >
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-            About
+            Обо мне
           </h2>
           {isExpanded ? (
             <ChevronUp className="w-5 h-5 text-gray-600 dark:text-gray-400" />

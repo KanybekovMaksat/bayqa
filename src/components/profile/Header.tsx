@@ -10,7 +10,7 @@ export default function Header({ onBookClick }: HeaderProps) {
   return (
     <header className="bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800">
       <div className="max-w-2xl mx-auto px-4 py-6">
-        <div className="flex justify-end mb-2">
+        {/* <div className="flex justify-end mb-2">
           <Link
             to="/dashboard"
             className="flex items-center gap-2 px-3 h-9 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
@@ -18,7 +18,7 @@ export default function Header({ onBookClick }: HeaderProps) {
             <Settings className="w-4 h-4" />
             <span>Dashboard</span>
           </Link>
-        </div>
+        </div> */}
         <div className="flex items-start gap-4">
           <img
             src={mockSpecialist.avatar}
@@ -37,11 +37,14 @@ export default function Header({ onBookClick }: HeaderProps) {
             </p>
           </div>
         </div>
-        <button
+        {/* <button
           onClick={onBookClick}
           className="w-full mt-6 h-12 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
         >
           Book a session
+        </button> */}
+        <button className="w-full mt-6 h-12 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors">
+         Связаться
         </button>
       </div>
     </header>
