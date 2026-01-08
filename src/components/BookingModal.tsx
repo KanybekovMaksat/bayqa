@@ -51,8 +51,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
 
-    if (dateStr === today.toISOString().split('T')[0]) return 'Today';
-    if (dateStr === tomorrow.toISOString().split('T')[0]) return 'Tomorrow';
+    if (dateStr === today.toISOString().split('T')[0]) return 'Cегодня';
+    if (dateStr === tomorrow.toISOString().split('T')[0]) return 'Завтра';
 
     return date.toLocaleDateString('ru-RU', {
       weekday: 'short',
@@ -83,7 +83,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       <div className="relative w-full max-w-2xl bg-white dark:bg-gray-950 rounded-t-2xl sm:rounded-2xl max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 px-4 py-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-            Book a session
+            Забронировать
           </h2>
           <button
             onClick={onClose}
@@ -104,7 +104,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     : 'bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100'
                 }`}
               >
-                Today
+                Сегодня
               </button>
               <button
                 onClick={() => setView('week')}
@@ -114,7 +114,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     : 'bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100'
                 }`}
               >
-                Week
+                Неделя
               </button>
               <button
                 onClick={() => setView('month')}
@@ -124,7 +124,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     : 'bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100'
                 }`}
               >
-                Month
+                Месяц
               </button>
             </div>
 
@@ -172,7 +172,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     : 'bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-600 cursor-not-allowed'
                 }`}
               >
-                Confirm booking
+                Подвердить
               </button>
             </div>
           </>

@@ -37,12 +37,12 @@ export default function Header({ onBookClick }: HeaderProps) {
             </p>
           </div>
         </div>
-        {/* <button
+        <button
           onClick={onBookClick}
-          className="w-full mt-6 h-12 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
+          className="w-full mt-6 h-12 bg-sky-600 dark:bg-blue-900 text-white  font-medium rounded-lg  transition-colors"
         >
-          Book a session
-        </button> */}
+          Забронировать консультацию
+        </button>
                 <a
             href="https://t.me/maksat_kanybekov"
             target="_blank"
