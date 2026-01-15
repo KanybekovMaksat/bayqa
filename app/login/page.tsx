@@ -1,49 +1,30 @@
-'use client';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+"use client";
+import { useState } from 'react';
+// import { useNavigate, Link } from 'react-router-dom';
+// import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
-import { UserPlus } from 'lucide-react';
+import { LogIn, Mail } from 'lucide-react';
 import Link from 'next/link';
-import React, { useState } from 'react';
 
-export default function Register() {
-  // const navigate = useNavigate();
-  // const { signUp } = useAuth();
+export default function Login() {
+//   const navigate = useNavigate();
+//   const { signIn, signInWithGoogle } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    username: '',
     email: '',
     password: '',
-    confirmPassword: '',
   });
-  const [googleLoading, setGoogleLoading] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<{
-    username?: string;
     email?: string;
     password?: string;
-    confirmPassword?: string;
   }>({});
-
-  const validateUsername = (username: string) => {
-    if (username.length < 3) {
-      return 'Username must be at least 3 characters';
-    }
-    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-      return 'Username can only contain letters, numbers, and underscores';
-    }
-    return null;
-  };
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -53,21 +34,39 @@ export default function Register() {
     return null;
   };
 
-  const validatePassword = (password: string) => {
-    if (password.length < 8) {
-      return 'Password must be at least 8 characters';
-    }
-    if (!/(?=.*[a-zA-Z])(?=.*\d)/.test(password)) {
-      return 'Password must contain both letters and numbers';
-    }
-    return null;
-  };
-
   const handleInputChange = (field: string, value: string) => {
     setFormData({ ...formData, [field]: value });
     setFieldErrors({ ...fieldErrors, [field]: undefined });
     setError(null);
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setFieldErrors({});
+
+    const emailError = validateEmail(formData.email);
+
+    if (emailError || !formData.password) {
+      setFieldErrors({
+        email: emailError || undefined,
+        password: !formData.password ? 'Password is required' : undefined,
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    const { error } = await signIn(formData.email, formData.password);
+
+    // if (error) {
+    //   setError(error.message);
+    //   setLoading(false);
+    // } else {
+    //   navigate('/profile');
+    // }
+  };
+
   const handleGoogleSignIn = async () => {
     setGoogleLoading(true);
     setError(null);
@@ -80,61 +79,29 @@ export default function Register() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setFieldErrors({});
-
-    const usernameError = validateUsername(formData.username);
-    const emailError = validateEmail(formData.email);
-    const passwordError = validatePassword(formData.password);
-    const confirmPasswordError =
-      formData.password !== formData.confirmPassword
-        ? 'Passwords do not match'
-        : null;
-
-    if (usernameError || emailError || passwordError || confirmPasswordError) {
-      setFieldErrors({
-        username: usernameError || undefined,
-        email: emailError || undefined,
-        password: passwordError || undefined,
-        confirmPassword: confirmPasswordError || undefined,
-      });
-      return;
-    }
-
-    setLoading(true);
-
-    // const { error } = await signUp(
-    //   formData.email,
-    //   formData.password,
-    //   formData.username
-    // );
-
-    // if (error) {
-    //   setError(error.message);
-    //   setLoading(false);
-    // } else {
-    //   navigate('/profile');
-    // }
-  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 p-4">
-   <Card className="w-full max-w-md shadow-xl">
+
+      <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-center mb-4">
             <div className="bg-primary text-primary-foreground p-3 rounded-full">
-              <UserPlus className="h-6 w-6" />
+              <LogIn className="h-6 w-6" />
             </div>
           </div>
           <CardTitle className="text-2xl font-bold text-center">
-            Создать аккаунт
+          Рады видеть вас снова!
           </CardTitle>
           <CardDescription className="text-center">
-            Введите ваши данные для регистрации
+          Войдите в свой аккаунт
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
 
           <Button
             type="button"
@@ -175,40 +142,21 @@ export default function Register() {
             </div>
           </div>
 
-          <form className="space-y-4">
-            {/* {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )} */}
-
-            <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
-              <Input
-                id="username"
-                type="text"
-                placeholder="john_doe"
-                value={formData.username}
-                onChange={(e) => handleInputChange('username', e.target.value)}
-                disabled={loading}
-              />
-              {fieldErrors.username && (
-                <p className="text-sm text-destructive">
-                  {fieldErrors.username}
-                </p>
-              )}
-            </div>
-
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="john@example.com"
-                value={formData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-                disabled={loading}
-              />
+              <div className="relative">
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="john@example.com"
+                  className="pl-9"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  disabled={loading || googleLoading}
+                />
+              </div>
               {fieldErrors.email && (
                 <p className="text-sm text-destructive">{fieldErrors.email}</p>
               )}
@@ -222,47 +170,30 @@ export default function Register() {
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={(e) => handleInputChange('password', e.target.value)}
-                disabled={loading}
+                disabled={loading || googleLoading}
               />
               {fieldErrors.password && (
-                <p className="text-sm text-destructive">
-                  {fieldErrors.password}
-                </p>
+                <p className="text-sm text-destructive">{fieldErrors.password}</p>
               )}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Подтвердите пароль</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="••••••••"
-                value={formData.confirmPassword}
-                onChange={(e) =>
-                  handleInputChange('confirmPassword', e.target.value)
-                }
-                disabled={loading}
-              />
-              {fieldErrors.confirmPassword && (
-                <p className="text-sm text-destructive">
-                  {fieldErrors.confirmPassword}
-                </p>
-              )}
-            </div>
-
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Создание аккаунта...' : 'Создать аккаунт'}
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={loading || googleLoading}
+            >
+              {loading ? 'Выполняется вход...' : 'Войти'}
             </Button>
           </form>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
           <div className="text-sm text-center text-muted-foreground">
-            Уже есть аккаунт?{' '}
+           Не имеете аккаунт?{' '}
             <Link
-              href="/login"
+              href="/register"
               className="text-primary hover:underline font-medium"
             >
-              Войти
+             Создать аккаунт
             </Link>
           </div>
         </CardFooter>
