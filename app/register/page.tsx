@@ -15,10 +15,12 @@ import { Separator } from '@/components/ui/separator';
 import { UserPlus } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Register() {
-  // const navigate = useNavigate();
-  // const { signUp } = useAuth();
+  const router = useRouter();
+  const { signUp, signInWithGoogle } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -72,7 +74,7 @@ export default function Register() {
     setGoogleLoading(true);
     setError(null);
 
-    // const { error } = await signInWithGoogle();
+    const { error } = await signInWithGoogle();
 
     if (error) {
       setError(error.message);
@@ -105,22 +107,22 @@ export default function Register() {
 
     setLoading(true);
 
-    // const { error } = await signUp(
-    //   formData.email,
-    //   formData.password,
-    //   formData.username
-    // );
+    const { error } = await signUp(
+      formData.email,
+      formData.password,
+      formData.username
+    );
 
-    // if (error) {
-    //   setError(error.message);
-    //   setLoading(false);
-    // } else {
-    //   navigate('/profile');
-    // }
+    if (error) {
+      setError(error.message);
+      setLoading(false);
+    } else {
+      router.push('/profile');
+    }
   };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 p-4">
-   <Card className="w-full max-w-md shadow-xl">
+      <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-center mb-4">
             <div className="bg-primary text-primary-foreground p-3 rounded-full">
@@ -135,7 +137,6 @@ export default function Register() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-
           <Button
             type="button"
             variant="outline"

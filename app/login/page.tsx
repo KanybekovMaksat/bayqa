@@ -1,19 +1,26 @@
-"use client";
+'use client';
 import { useState } from 'react';
-// import { useNavigate, Link } from 'react-router-dom';
-// import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { LogIn, Mail } from 'lucide-react';
 import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Login() {
-//   const navigate = useNavigate();
-//   const { signIn, signInWithGoogle } = useAuth();
+  const router = useRouter();
+  const { signIn, signInWithGoogle } = useAuth();
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -59,19 +66,19 @@ export default function Login() {
 
     const { error } = await signIn(formData.email, formData.password);
 
-    // if (error) {
-    //   setError(error.message);
-    //   setLoading(false);
-    // } else {
-    //   navigate('/profile');
-    // }
+    if (error) {
+      setError(error.message);
+      setLoading(false);
+    } else {
+      router.push('/profile');
+    }
   };
 
   const handleGoogleSignIn = async () => {
     setGoogleLoading(true);
     setError(null);
 
-    // const { error } = await signInWithGoogle();
+    const { error } = await signInWithGoogle();
 
     if (error) {
       setError(error.message);
@@ -81,7 +88,6 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 p-4">
-
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-center mb-4">
@@ -90,10 +96,10 @@ export default function Login() {
             </div>
           </div>
           <CardTitle className="text-2xl font-bold text-center">
-          Рады видеть вас снова!
+            Рады видеть вас снова!
           </CardTitle>
           <CardDescription className="text-center">
-          Войдите в свой аккаунт
+            Войдите в свой аккаунт
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -173,7 +179,9 @@ export default function Login() {
                 disabled={loading || googleLoading}
               />
               {fieldErrors.password && (
-                <p className="text-sm text-destructive">{fieldErrors.password}</p>
+                <p className="text-sm text-destructive">
+                  {fieldErrors.password}
+                </p>
               )}
             </div>
 
@@ -188,12 +196,12 @@ export default function Login() {
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
           <div className="text-sm text-center text-muted-foreground">
-           Не имеете аккаунт?{' '}
+            Не имеете аккаунт?{' '}
             <Link
               href="/register"
               className="text-primary hover:underline font-medium"
             >
-             Создать аккаунт
+              Создать аккаунт
             </Link>
           </div>
         </CardFooter>

@@ -1,19 +1,31 @@
 'use client';
 import { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { User, Mail, LogOut, Save, Calendar } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation'
 
 export default function Profile() {
-  // const navigate = useNavigate();
-  const { user, profile, signOut, updateProfile, loading: authLoading } = useAuth();
+  const router = useRouter();
+  const {
+    user,
+    profile,
+    signOut,
+    updateProfile,
+    loading: authLoading,
+  } = useAuth();
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -25,9 +37,9 @@ export default function Profile() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      navigate('/login');
+      router.push('/login');
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, router]);
 
   useEffect(() => {
     if (profile) {
@@ -40,7 +52,7 @@ export default function Profile() {
 
   const handleSignOut = async () => {
     await signOut();
-    // navigate('/login');
+    router.push('/login');
   };
 
   const handleSave = async () => {
@@ -140,7 +152,6 @@ export default function Profile() {
               )}
 
               <div className="space-y-4">
-
                 <div className="space-y-2">
                   <Label htmlFor="email">
                     <Mail className="inline h-4 w-4 mr-2" />
@@ -177,7 +188,8 @@ export default function Profile() {
 
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Calendar className="mr-2 h-4 w-4" />
-                  Member since {new Date(profile.created_at).toLocaleDateString()}
+                  Member since{' '}
+                  {new Date(profile.created_at).toLocaleDateString()}
                 </div>
               </div>
 
