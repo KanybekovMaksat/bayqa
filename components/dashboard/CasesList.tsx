@@ -62,14 +62,14 @@ export default function CasesList() {
     <div className="bg-white dark:bg-gray-950 rounded-lg border border-gray-200 dark:border-gray-800 p-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-          Cases
+          Кейсы
         </h2>
         <button
           onClick={() => setIsAdding(true)}
           className="flex items-center gap-2 h-10 px-4 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
         >
           <Plus className="w-4 h-4" />
-          Add
+          Добавить
         </button>
       </div>
 

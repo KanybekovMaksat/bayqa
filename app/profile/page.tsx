@@ -15,7 +15,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { User, Mail, LogOut, Save, Calendar } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import DashboardNav from '@/components/dashboard/DashboardNav';
+import ProfileForm from '@/components/dashboard/ProfileForm';
+import ServicesList from '@/components/dashboard/ServicesList';
+import CasesList from '@/components/dashboard/CasesList';
+import ScheduleGrid from '@/components/dashboard/ScheduleGrid';
 
 export default function Profile() {
   const router = useRouter();
@@ -30,6 +35,9 @@ export default function Profile() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<
+    'profile' | 'services' | 'schedule'
+  >('profile');
   const [formData, setFormData] = useState({
     username: '',
     avatar: '',
@@ -39,7 +47,6 @@ export default function Profile() {
     if (!authLoading && !user) {
       router.push('/login');
     }
-    
   }, [user, authLoading, router]);
 
   useEffect(() => {
@@ -94,7 +101,7 @@ export default function Profile() {
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
-        <div className="animate-pulse text-lg">Loading...</div>
+        <div className="animate-pulse text-lg">Загрузке...</div>
       </div>
     );
   }
@@ -114,38 +121,34 @@ export default function Profile() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 p-4">
       <div className="max-w-4xl mx-auto pt-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Profile</h1>
+          <h1 className="text-3xl font-bold">Профиль</h1>
           <div className="flex gap-2">
             <Button variant="outline" onClick={handleSignOut}>
               <LogOut className="mr-2 h-4 w-4" />
-              Sign Out
+              Выход
             </Button>
           </div>
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">
-          <Card className="md:col-span-1">
+          <Card className="md:col-span-1 bg-white dark:bg-gray-950 rounded-lg border border-gray-200 dark:border-gray-800 ">
             <CardHeader>
-              <CardTitle>Avatar</CardTitle>
+              <CardTitle>Аватар</CardTitle>
             </CardHeader>
           </Card>
-
-          <Card className="md:col-span-2">
+          <Card className="md:col-span-2 bg-white dark:bg-gray-950 rounded-lg border border-gray-200 dark:border-gray-800">
             <CardHeader>
-              <CardTitle>Account Information</CardTitle>
+              <CardTitle>Информация об аккаунт</CardTitle>
               <CardDescription>
-                Manage your account details and preferences
+                Управление вашей информацией профиля
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               {success && (
                 <Alert>
-                  <AlertDescription>
-                    Profile updated successfully!
-                  </AlertDescription>
+                  <AlertDescription>Профиль успешно обновлен!</AlertDescription>
                 </Alert>
               )}
-
               {error && (
                 <Alert variant="destructive">
                   <AlertDescription>{error}</AlertDescription>
@@ -165,31 +168,13 @@ export default function Profile() {
                     className="bg-muted"
                   />
                   <p className="text-xs text-muted-foreground">
-                    Email cannot be changed
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="avatar">Avatar URL</Label>
-                  <Input
-                    id="avatar"
-                    placeholder="https://example.com/avatar.jpg"
-                    value={formData.avatar}
-                    onChange={(e) =>
-                      setFormData({ ...formData, avatar: e.target.value })
-                    }
-                    disabled={!editing || loading}
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Enter a URL to your avatar image
+                    Email не может быть изменен
                   </p>
                 </div>
 
                 <Separator />
-
                 <div className="flex items-center text-sm text-muted-foreground">
-                  <Calendar className="mr-2 h-4 w-4" />
-                  Member since{' '}
+                  <Calendar className="mr-2 h-4 w-4" />В проекте с{' '}
                   {new Date(profile.created_at).toLocaleDateString()}
                 </div>
               </div>
@@ -197,7 +182,7 @@ export default function Profile() {
               <div className="flex gap-2">
                 {!editing ? (
                   <Button onClick={() => setEditing(true)} className="w-full">
-                    Edit Profile
+                    Изменить профиль
                   </Button>
                 ) : (
                   <>
@@ -207,20 +192,46 @@ export default function Profile() {
                       className="flex-1"
                     >
                       <Save className="mr-2 h-4 w-4" />
-                      {loading ? 'Saving...' : 'Save Changes'}
+                      {loading ? 'Сохранение...' : 'Сохранить изменения'}
                     </Button>
                     <Button
                       variant="outline"
                       onClick={handleCancel}
                       disabled={loading}
                     >
-                      Cancel
+                      Назад
                     </Button>
                   </>
                 )}
               </div>
             </CardContent>
           </Card>
+        </div>
+
+        <div className="min-h-screen mt-3 rounded-lg bg-gray-100 dark:bg-gray-950  border border-gray-200 dark:border-gray-800">
+
+          <DashboardNav activeTab={activeTab} onTabChange={setActiveTab} />
+
+          <main className="max-w-4xl mx-auto px-4 py-6 g">
+            {activeTab === 'profile' && (
+              <div className="space-y-6">
+                <ProfileForm />
+              </div>
+            )}
+
+            {activeTab === 'services' && (
+              <div className="space-y-6">
+                <ServicesList />
+                <CasesList />
+              </div>
+            )}
+
+            {activeTab === 'schedule' && (
+              <div className="space-y-6">
+                <ScheduleGrid />
+              </div>
+            )}
+          </main>
         </div>
       </div>
     </div>
