@@ -1,8 +1,7 @@
-"use client"
+'use client';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session, AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
-
 
 interface Profile {
   id: string;
@@ -18,11 +17,21 @@ interface AuthContextType {
   profile: Profile | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, username: string) => Promise<{ error: AuthError | null }>;
-  signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
+  signUp: (
+    email: string,
+    password: string,
+    username: string
+  ) => Promise<{ error: AuthError | null }>;
+  signIn: (
+    email: string,
+    password: string
+  ) => Promise<{ error: AuthError | null }>;
   signInWithGoogle: () => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
-  updateProfile: (username: string, avatar?: string) => Promise<{ error: Error | null }>;
+  updateProfile: (
+    username: string,
+    avatar?: string
+  ) => Promise<{ error: Error | null }>;
   refreshProfile: () => Promise<void>;
 }
 
@@ -59,7 +68,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(false);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       (async () => {
         setSession(session);
         setUser(session?.user ?? null);
@@ -81,11 +92,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email,
         password,
         options: {
-          data: {
-            username,
-          },
+          data: { username },
+          emailRedirectTo: `${window.location.origin}/verify-email`,
         },
       });
+
       return { error };
     } catch (error) {
       return { error: error as AuthError };
@@ -94,11 +105,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      return { error };
+
+      if (error) return { error };
+
+      if (!data.user?.email_confirmed_at) {
+        return {
+          error: { message: 'Пожалуйста, подтвердите ваш email' } as AuthError,
+        };
+      }
+
+      return { error: null };
     } catch (error) {
       return { error: error as AuthError };
     }
@@ -129,9 +149,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!user) return { error: new Error('No user logged in') };
 
     try {
-      const updates = avatar !== undefined
-        ? { username, avatar: avatar || null }
-        : { username };
+      const updates =
+        avatar !== undefined
+          ? { username, avatar: avatar || null }
+          : { username };
 
       const { error } = await supabase
         .from('profiles')

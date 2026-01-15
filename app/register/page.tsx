@@ -15,14 +15,13 @@ import { Separator } from '@/components/ui/separator';
 import { UserPlus } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
 export default function Register() {
-  const router = useRouter();
   const { signUp, signInWithGoogle } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [emailSent, setEmailSent] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -117,7 +116,8 @@ export default function Register() {
       setError(error.message);
       setLoading(false);
     } else {
-      router.push('/profile');
+      setEmailSent(true);
+      setLoading(false);
     }
   };
   return (
@@ -176,12 +176,21 @@ export default function Register() {
             </div>
           </div>
 
-          <form className="space-y-4">
-            {/* {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {emailSent && (
+              <Alert className="mb-4">
+                <AlertDescription>
+                  На вашу почту <strong>{formData.email}</strong> отправлено
+                  письмо для подтверждения аккаунта. Пожалуйста, откройте его и
+                  перейдите по ссылке.
+                </AlertDescription>
               </Alert>
-            )} */}
+            )}
+            {error && (
+              <Alert variant="destructive">
+                s<AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
 
             <div className="space-y-2">
               <Label htmlFor="username">Username</Label>
