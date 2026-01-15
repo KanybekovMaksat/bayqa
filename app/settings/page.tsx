@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Auth() {
+export default function Settings() {
   return (
     <div>page</div>
   )
