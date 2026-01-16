@@ -16,6 +16,7 @@ interface AuthContextType {
   user: User | null;
   profile: Profile | null;
   session: Session | null;
+  phone: string | null;
   loading: boolean;
   signUp: (
     email: string,

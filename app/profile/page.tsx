@@ -13,7 +13,7 @@ import {
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
-import { User, Mail, LogOut, Save, Calendar } from 'lucide-react';
+import { User, Mail, LogOut, Save, Calendar, Phone } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import DashboardNav from '@/components/dashboard/DashboardNav';
@@ -21,6 +21,7 @@ import ProfileForm from '@/components/dashboard/ProfileForm';
 import ServicesList from '@/components/dashboard/ServicesList';
 import CasesList from '@/components/dashboard/CasesList';
 import ScheduleGrid from '@/components/dashboard/ScheduleGrid';
+import PhoneVerification from '@/components/profile/PhoneVerification';
 
 export default function Profile() {
   const router = useRouter();
@@ -171,18 +172,27 @@ export default function Profile() {
                     Email не может быть изменен
                   </p>
                 </div>
-
-                <Separator />
-                <div className="flex items-center text-sm text-muted-foreground">
-                  <Calendar className="mr-2 h-4 w-4" />В проекте с{' '}
-                  {new Date(profile.created_at).toLocaleDateString()}
+                <div className="space-y-2">
+                  <Label htmlFor="email">
+                    <User className="inline h-4 w-4 mr-2" />
+                    Username
+                  </Label>
+                  <Input
+                    id="tel"
+                    value={profile.username}
+                    className="bg-muted"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Он станет вашим публичным именем в проекте
+                  </p>
                 </div>
+                <Separator />
               </div>
 
               <div className="flex gap-2">
                 {!editing ? (
                   <Button onClick={() => setEditing(true)} className="w-full">
-                    Изменить профиль
+                    Изменить публичное имя
                   </Button>
                 ) : (
                   <>
@@ -208,8 +218,9 @@ export default function Profile() {
           </Card>
         </div>
 
-        <div className="min-h-screen mt-3 rounded-lg bg-gray-100 dark:bg-gray-950  border border-gray-200 dark:border-gray-800">
+        <PhoneVerification />
 
+        <div className="min-h-screen mt-3 rounded-lg bg-gray-100 dark:bg-gray-950  border border-gray-200 dark:border-gray-800">
           <DashboardNav activeTab={activeTab} onTabChange={setActiveTab} />
 
           <main className="max-w-4xl mx-auto px-4 py-6 g">
