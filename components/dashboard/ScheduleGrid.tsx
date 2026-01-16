@@ -32,12 +32,12 @@ export default function ScheduleGrid() {
   return (
     <div className="bg-white dark:bg-gray-950 rounded-lg border border-gray-200 dark:border-gray-800 p-6">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
-        Schedule
+        График работы
       </h2>
 
       <div className="mb-6">
         <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
-          Working Days
+          Рабочие дни
         </h3>
         <div className="space-y-2">
           {weekDays.map((day) => (
@@ -59,7 +59,7 @@ export default function ScheduleGrid() {
 
       <div className="mb-6">
         <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
-          Working Hours
+          Рабочее время
         </h3>
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -95,7 +95,7 @@ export default function ScheduleGrid() {
         onClick={handleSave}
         className="w-full h-12 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
       >
-        Save Schedule
+       Сохранить
       </button>
     </div>
   );

@@ -48,14 +48,14 @@ export default function ServicesList() {
     <div className="bg-white dark:bg-gray-950 rounded-lg border border-gray-200 dark:border-gray-800 p-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-          Services
+          Услуги 
         </h2>
         <button
           onClick={() => setIsAdding(true)}
           className="flex items-center gap-2 h-10 px-4 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
         >
           <Plus className="w-4 h-4" />
-          Add
+          Добавить 
         </button>
       </div>
 
@@ -86,13 +86,13 @@ export default function ServicesList() {
               }}
               className="flex-1 h-10 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-medium rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
             >
-              Cancel
+              Отмена
             </button>
             <button
               onClick={editingId ? handleUpdate : handleAdd}
               className="flex-1 h-10 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
             >
-              {editingId ? 'Update' : 'Add'}
+              {editingId ? 'Обновить' : 'Добавить'}
             </button>
           </div>
         </div>

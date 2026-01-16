@@ -1,5 +1,3 @@
-import { Settings } from 'lucide-react';
-
 import { mockSpecialist } from '../../data/mockData';
 
 interface HeaderProps {
@@ -10,15 +8,6 @@ export default function Header({ onBookClick }: HeaderProps) {
   return (
     <header className="bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800">
       <div className="max-w-2xl mx-auto px-4 py-6">
-        {/* <div className="flex justify-end mb-2">
-          <Link
-            to="/dashboard"
-            className="flex items-center gap-2 px-3 h-9 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
-          >
-            <Settings className="w-4 h-4" />
-            <span>Dashboard</span>
-          </Link>
-        </div> */}
         <div className="flex items-start gap-4">
           <img
             src={mockSpecialist.avatar}

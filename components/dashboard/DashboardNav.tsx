@@ -10,13 +10,13 @@ export default function DashboardNav({
   onTabChange,
 }: DashboardNavProps) {
   const tabs = [
-    { id: 'profile' as const, label: 'Profile', icon: User },
-    { id: 'services' as const, label: 'Services', icon: Briefcase },
-    { id: 'schedule' as const, label: 'Schedule', icon: Calendar },
+    { id: 'profile' as const, label: 'Общая', icon: User },
+    { id: 'services' as const, label: 'Услуги', icon: Briefcase },
+    { id: 'schedule' as const, label: 'График', icon: Calendar },
   ];
 
   return (
-    <nav className="bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800">
+    <nav className="bg-white dark:bg-gray-950 border-b rounded-t-lg border-gray-200 dark:border-gray-800">
       <div className="max-w-4xl mx-auto px-4">
         <div className="flex gap-1 overflow-x-auto">
           {tabs.map((tab) => {
